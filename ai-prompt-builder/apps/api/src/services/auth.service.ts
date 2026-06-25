@@ -38,9 +38,6 @@ export class AuthService {
     const accessToken = generateToken(user.id);
     const refreshToken = generateRefreshToken(user.id);
 
-    console.log('🔐 Login Service - User logged in:', user.id);
-    console.log('🔐 Login Service - Access Token generated (first 50 chars):', accessToken.substring(0, 50) + '...');
-
     return { user: { id: user.id, email: user.email, name: user.name }, accessToken, refreshToken };
   }
 }

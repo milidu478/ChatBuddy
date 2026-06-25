@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Sparkles, Loader2 } from 'lucide-react';
+import { API_V1 } from '../../lib/apiConfig';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
@@ -38,7 +39,7 @@ export default function SignupPage() {
 
     try {
       // Call the register endpoint on the backend
-      const registerRes = await fetch('http://localhost:5000/api/v1/auth/register', {
+      const registerRes = await fetch(`${API_V1}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

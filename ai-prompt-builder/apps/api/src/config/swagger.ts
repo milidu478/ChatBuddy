@@ -158,7 +158,8 @@ const swaggerOptions = {
   apis: [
     'src/routes/auth.routes.ts',
     'src/routes/users.routes.ts',
-    'src/routes/templates.routes.ts',
+    'src/routes/prompt-hierarchy.routes.ts',
+    'src/routes/chat-sessions.routes.ts',
     'src/routes/prompts.routes.ts',
   ],
 };

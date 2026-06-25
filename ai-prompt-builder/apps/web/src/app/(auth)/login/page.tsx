@@ -26,10 +26,10 @@ export default function LoginPage() {
 
     if (result?.error) {
       setError('Invalid email or password. Please try again.');
-      setIsLoading(false);
     } else {
-      router.push('/'); // ලොග් වුණාට පස්සේ ප්‍රධාන Chat එකට යනවා
+      router.push('/');
     }
+    setIsLoading(false);
   };
 
   return (

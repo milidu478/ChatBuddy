@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Layers, Settings, Sparkles, AlertCircle, Loader2, LogOut } from 'lucide-react';
+import { API_V1 } from '../lib/apiConfig';
 
 interface Template {
   id: string;
@@ -74,7 +75,7 @@ export default function CascadingPromptSidebar({ onSelectTemplate, resetTrigger 
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('http://localhost:5000/api/v1/prompt-hierarchy/tree', {
+      const res = await fetch(`${API_V1}/prompt-hierarchy/tree`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();

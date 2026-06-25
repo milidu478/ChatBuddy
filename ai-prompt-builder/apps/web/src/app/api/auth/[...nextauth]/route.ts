@@ -1,6 +1,8 @@
 import NextAuth, { type NextAuthOptions, type DefaultSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000';
+
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: DefaultSession["user"] & {
@@ -30,7 +32,7 @@ export const authOptions: NextAuthOptions = {
 
         try {
           // අපේ Express Backend එකට request එක යවනවා
-          const res = await fetch("http://localhost:5000/api/v1/auth/login", {
+          const res = await fetch(`${API_URL}/api/v1/auth/login`, {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

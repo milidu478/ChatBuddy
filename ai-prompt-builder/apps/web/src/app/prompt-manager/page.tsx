@@ -18,8 +18,20 @@ import {
   Loader2, 
   AlertCircle, 
   CheckCircle,
-  FolderOpen
+  FolderOpen,
+  Key,
+  Eye,
+  EyeOff,
+  ExternalLink,
 } from 'lucide-react';
+import { API_V1 } from '../lib/apiConfig';
+import {
+  fetchApiKeySettings,
+  saveGeminiApiKey,
+  deleteGeminiApiKey,
+  validateGeminiApiKey,
+  type ApiKeySettings,
+} from '../lib/userSettingsApi';
 
 // ============================================================================
 // TYPES
@@ -103,6 +115,16 @@ export default function PromptManagerPage() {
   // Submitting States
   const [submitting, setSubmitting] = useState(false);
 
+  // API Key Settings
+  const [apiKeySettings, setApiKeySettings] = useState<ApiKeySettings | null>(null);
+  const [apiKeyInput, setApiKeyInput] = useState('');
+  const [showApiKey, setShowApiKey] = useState(false);
+  const [apiKeyLoading, setApiKeyLoading] = useState(false);
+  const [apiKeySaving, setApiKeySaving] = useState(false);
+  const [apiKeyError, setApiKeyError] = useState<string | null>(null);
+  const [apiKeySuccess, setApiKeySuccess] = useState<string | null>(null);
+  const [showApiKeyPanel, setShowApiKeyPanel] = useState(false);
+
   // ============================================================================
   // FETCH HIERARCHY TREE
   // ============================================================================
@@ -111,7 +133,7 @@ export default function PromptManagerPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('http://localhost:5000/api/v1/prompt-hierarchy/tree', {
+      const res = await fetch(`${API_V1}/prompt-hierarchy/tree`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -135,8 +157,77 @@ export default function PromptManagerPage() {
     }
     if (token) {
       fetchTree();
+      loadApiKeySettings();
     }
   }, [token, status, router]);
+
+  const loadApiKeySettings = async () => {
+    if (!token) return;
+    setApiKeyLoading(true);
+    setApiKeyError(null);
+    try {
+      const settings = await fetchApiKeySettings(token);
+      setApiKeySettings(settings);
+    } catch (err) {
+      console.error('Failed to load API key settings', err);
+    } finally {
+      setApiKeyLoading(false);
+    }
+  };
+
+  const handleSaveApiKey = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!token || !apiKeyInput.trim()) return;
+
+    setApiKeySaving(true);
+    setApiKeyError(null);
+    setApiKeySuccess(null);
+    try {
+      await saveGeminiApiKey(token, apiKeyInput.trim());
+      setApiKeyInput('');
+      setApiKeySuccess('Gemini API key saved successfully.');
+      await loadApiKeySettings();
+    } catch (err) {
+      setApiKeyError(err instanceof Error ? err.message : 'Failed to save API key');
+    } finally {
+      setApiKeySaving(false);
+    }
+  };
+
+  const handleValidateApiKey = async () => {
+    if (!token || !apiKeyInput.trim()) return;
+
+    setApiKeySaving(true);
+    setApiKeyError(null);
+    setApiKeySuccess(null);
+    try {
+      await validateGeminiApiKey(token, apiKeyInput.trim());
+      setApiKeySuccess('API key is valid.');
+    } catch (err) {
+      setApiKeyError(err instanceof Error ? err.message : 'Invalid API key');
+    } finally {
+      setApiKeySaving(false);
+    }
+  };
+
+  const handleRemoveApiKey = async () => {
+    if (!token) return;
+    if (!confirm('Remove your saved Gemini API key? Chat will fall back to the server key if configured.')) return;
+
+    setApiKeySaving(true);
+    setApiKeyError(null);
+    setApiKeySuccess(null);
+    try {
+      await deleteGeminiApiKey(token);
+      setApiKeyInput('');
+      setApiKeySuccess('API key removed.');
+      await loadApiKeySettings();
+    } catch (err) {
+      setApiKeyError(err instanceof Error ? err.message : 'Failed to remove API key');
+    } finally {
+      setApiKeySaving(false);
+    }
+  };
 
   // ============================================================================
   // HELPER METHODS
@@ -185,7 +276,7 @@ export default function PromptManagerPage() {
     setSubmitting(true);
 
     try {
-      let url = 'http://localhost:5000/api/v1';
+      let url = API_V1;
       let method = 'POST';
       let body: Record<string, any> = { name: nameInput.trim() };
 
@@ -290,7 +381,7 @@ export default function PromptManagerPage() {
 
     clearNotifications();
     try {
-      const res = await fetch(`http://localhost:5000/api/v1/${type}s/${id}`, {
+      const res = await fetch(`${API_V1}/${type}s/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -375,7 +466,138 @@ export default function PromptManagerPage() {
             <p className="text-xs text-slate-400">Manage the 5-level prompt hierarchy database</p>
           </div>
         </div>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setShowApiKeyPanel((v) => !v)}
+            className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition border ${
+              showApiKeyPanel || apiKeySettings?.isConfigured
+                ? 'bg-cyan-950/40 border-cyan-800/50 text-cyan-300'
+                : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700'
+            }`}
+          >
+            <Key className="w-4 h-4" />
+            {apiKeySettings?.isConfigured ? 'API Key Configured' : 'Add API Key'}
+          </button>
+        </div>
       </header>
+
+      {showApiKeyPanel && (
+        <div className="border-b border-slate-800 bg-slate-950/60 px-6 py-5">
+          <div className="max-w-3xl mx-auto">
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <div>
+                <h2 className="text-sm font-bold text-slate-200 flex items-center gap-2">
+                  <Key className="w-4 h-4 text-cyan-400" />
+                  Gemini API Key
+                </h2>
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                  Required for AI chat. Your key is stored on your account and used instead of the server default.
+                </p>
+              </div>
+              <a
+                href="https://aistudio.google.com/apikey"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-xs text-cyan-400 hover:text-cyan-300 whitespace-nowrap"
+              >
+                Get a key
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+
+            {apiKeyLoading ? (
+              <div className="flex items-center gap-2 text-sm text-slate-500">
+                <Loader2 className="w-4 h-4 animate-spin text-cyan-400" />
+                Loading settings...
+              </div>
+            ) : (
+              <>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {apiKeySettings?.hasUserKey && (
+                    <span className="text-xs px-2.5 py-1 rounded-lg bg-emerald-950/40 border border-emerald-800/50 text-emerald-300">
+                      Your key saved {apiKeySettings.keyHint}
+                    </span>
+                  )}
+                  {apiKeySettings?.hasServerKey && (
+                    <span className="text-xs px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-400">
+                      Server fallback available
+                    </span>
+                  )}
+                  {!apiKeySettings?.isConfigured && (
+                    <span className="text-xs px-2.5 py-1 rounded-lg bg-amber-950/40 border border-amber-800/50 text-amber-300">
+                      No API key configured — chat will not work
+                    </span>
+                  )}
+                  <span className="text-xs px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-500">
+                    Model: {apiKeySettings?.model ?? 'gemini-2.5-flash'}
+                  </span>
+                </div>
+
+                {apiKeyError && (
+                  <div className="mb-3 text-xs text-red-300 bg-red-950/30 border border-red-800/50 rounded-lg px-3 py-2">
+                    {apiKeyError}
+                  </div>
+                )}
+                {apiKeySuccess && (
+                  <div className="mb-3 text-xs text-emerald-300 bg-emerald-950/30 border border-emerald-800/50 rounded-lg px-3 py-2">
+                    {apiKeySuccess}
+                  </div>
+                )}
+
+                <form onSubmit={handleSaveApiKey} className="flex flex-col sm:flex-row gap-3">
+                  <div className="relative flex-1">
+                    <input
+                      type={showApiKey ? 'text' : 'password'}
+                      value={apiKeyInput}
+                      onChange={(e) => setApiKeyInput(e.target.value)}
+                      placeholder="Paste your Gemini API key (AIza...)"
+                      className="w-full py-3 pl-4 pr-11 bg-slate-900 border border-slate-800 focus:border-cyan-500 rounded-xl text-sm text-slate-100 focus:outline-none font-mono"
+                      autoComplete="off"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowApiKey((v) => !v)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+                      title={showApiKey ? 'Hide key' : 'Show key'}
+                    >
+                      {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                  <div className="flex gap-2 flex-shrink-0">
+                    <button
+                      type="button"
+                      onClick={handleValidateApiKey}
+                      disabled={apiKeySaving || !apiKeyInput.trim()}
+                      className="px-4 py-3 rounded-xl text-sm font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 disabled:opacity-40 transition"
+                    >
+                      Test
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={apiKeySaving || !apiKeyInput.trim()}
+                      className="px-4 py-3 rounded-xl text-sm font-semibold bg-cyan-600 hover:bg-cyan-500 text-white disabled:opacity-40 transition flex items-center gap-2"
+                    >
+                      {apiKeySaving ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                      Save Key
+                    </button>
+                    {apiKeySettings?.hasUserKey && (
+                      <button
+                        type="button"
+                        onClick={handleRemoveApiKey}
+                        disabled={apiKeySaving}
+                        className="px-4 py-3 rounded-xl text-sm font-medium text-red-400 hover:bg-red-950/40 border border-red-900/50 disabled:opacity-40 transition"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                </form>
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Main Content Body */}
       <main className="flex-1 flex overflow-hidden">

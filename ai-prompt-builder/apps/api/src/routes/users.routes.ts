@@ -1,5 +1,11 @@
 import { Router } from 'express';
-import { getMeHandler } from '../controllers/users.controller.js';
+import {
+  getMeHandler,
+  getApiKeySettingsHandler,
+  saveGeminiApiKeyHandler,
+  deleteGeminiApiKeyHandler,
+  validateGeminiApiKeyHandler,
+} from '../controllers/users.controller.js';
 import { authenticate } from '../middleware/authenticate.js';
 
 const router = Router();
@@ -41,5 +47,9 @@ const router = Router();
  *               $ref: '#/components/schemas/Error'
  */
 router.get('/me', authenticate, getMeHandler);
+router.get('/me/api-key', authenticate, getApiKeySettingsHandler);
+router.put('/me/gemini-api-key', authenticate, saveGeminiApiKeyHandler);
+router.delete('/me/gemini-api-key', authenticate, deleteGeminiApiKeyHandler);
+router.post('/me/gemini-api-key/validate', authenticate, validateGeminiApiKeyHandler);
 
 export default router;
