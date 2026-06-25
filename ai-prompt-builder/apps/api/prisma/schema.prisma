@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../../node_modules/@prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Users ───────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String?                         // null for OAuth users
+  name          String?
+  avatarUrl     String?
+  role          UserRole  @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  chatSessions    ChatSession[]
+  favoriteTemplates UserFavoriteTemplate[]
+
+  @@map("users")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+// ─── Hierarchy ───────────────────────────────────────────
+
+model Domain {
+  id          String       @id @default(cuid())
+  name        String       @unique
+  professions Profession[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@map("domains")
+}
+
+model Profession {
+  id        String   @id @default(cuid())
+  name      String
+  domainId  String
+  domain    Domain   @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  roles     Role[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([name, domainId])
+  @@map("professions")
+}
+
+model Role {
+  id              String           @id @default(cuid())
+  name            String
+  professionId    String
+  profession      Profession       @relation(fields: [professionId], references: [id], onDelete: Cascade)
+  specializations Specialization[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@unique([name, professionId])
+  @@map("roles")
+}
+
+model Specialization {
+  id        String     @id @default(cuid())
+  name      String
+  roleId    String
+  role      Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  templates Template[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@unique([name, roleId])
+  @@map("specializations")
+}
+
+model Template {
+  id               String                 @id @default(cuid())
+  name             String
+  promptText       String
+  specializationId String
+  specialization   Specialization         @relation(fields: [specializationId], references: [id], onDelete: Cascade)
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+  favorites        UserFavoriteTemplate[]
+
+  @@unique([name, specializationId])
+  @@map("templates")
+}
+
+model UserFavoriteTemplate {
+  userId      String
+  templateId  String
+  savedAt     DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  template    Template @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@id([userId, templateId])
+  @@map("user_favorite_templates")
+}
+
+// ─── Chat ─────────────────────────────────────────────────
+
+model ChatSession {
+  id          String    @id @default(cuid())
+  userId      String
+  title       String?                             // Auto-generated from first message
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages    Message[]
+
+  @@map("chat_sessions")
+}
+
+model Message {
+  id              String      @id @default(cuid())
+  sessionId       String
+  role            MessageRole
+  content         String
+  finalPrompt     String?                         // The assembled + (optionally optimized) prompt
+  templateId      String?                         // Template used, if any
+  promptOptimized Boolean     @default(false)
+  tokensUsed      Int?
+  modelUsed       String?
+  createdAt       DateTime    @default(now())
+
+  session         ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+}
