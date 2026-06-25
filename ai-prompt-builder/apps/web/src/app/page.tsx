@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useChatStore } from './stores/chatStore';
 import CascadingPromptSidebar from './components/CascadingPromptSidebar';
-import { Send, Bot, User, Sparkles, LogOut, Loader2, Plus } from 'lucide-react';
+import { Send, Bot, User, Loader2, Plus } from 'lucide-react';
 
 export default function ChatPage() {
   const { data: session, status } = useSession();
@@ -102,31 +102,13 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-slate-900">
+    <div className="flex h-screen w-screen overflow-hidden bg-slate-950">
       
-      {/* Left Sidebar */}
-      <div className="w-64 bg-slate-950 border-r border-slate-800 p-4 flex flex-col justify-between flex-shrink-0">
-        <div>
-          <div className="flex items-center gap-2 mb-8 px-2">
-            <Sparkles className="w-6 h-6 text-cyan-400" />
-            <h1 className="text-xl font-bold tracking-wider text-slate-100">PromptCraft</h1>
-          </div>
-        </div>
-        
-        <button 
-          onClick={() => signOut()} 
-          className="flex items-center gap-2 text-xs text-slate-400 hover:text-red-400 transition px-2 py-2 rounded-lg hover:bg-slate-900/50"
-        >
-          <LogOut className="w-4 h-4" />
-          <span>Log Out ({session?.user?.name || 'User'})</span>
-        </button>
-      </div>
-
-      {/* Middle Sidebar */}
+      {/* LHS Sidebar (Prompt Selector & Branding & SignOut) */}
       <CascadingPromptSidebar resetTrigger={resetTrigger} onSelectTemplate={handleSelectTemplate} />
 
       {/* Right Area (Main Chat) */}
-      <div className="flex-1 flex flex-col justify-between bg-slate-900">
+      <div className="flex-1 h-full flex flex-col overflow-hidden bg-gradient-to-b from-slate-900 to-slate-950">
         <div className="p-4 border-b border-slate-800 bg-slate-900/50 backdrop-blur flex items-center gap-2">
           <Bot className="text-cyan-400" />
           <span className="font-semibold text-sm text-slate-200">AI Real-time Workspace</span>
