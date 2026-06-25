@@ -158,31 +158,31 @@ export default function ChatPage() {
           )}
 
           {/* 🛠️ <textarea> එකක් දැම්මා ලොකු ටෙම්ප්ලේට් ලේසියෙන් එඩිට් කරන්න පුළුවන් වෙන්න */}
-          <div className="max-w-2xl mx-auto flex items-end gap-2 bg-slate-800/80 rounded-xl p-2 border border-slate-700 focus-within:border-cyan-500 transition relative">
+          <div className="max-w-3xl mx-auto flex items-end bg-slate-800/80 rounded-2xl p-4 border border-slate-700 focus-within:border-cyan-500 transition relative shadow-lg shadow-slate-950/20">
             <button
               type="button"
               onClick={handleNewChat}
-              className="absolute left-3 bottom-3 p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition"
+              className="absolute left-4 bottom-4 p-2.5 rounded-xl hover:bg-slate-700/50 text-slate-400 hover:text-white transition cursor-pointer"
               title="New Chat"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-5 h-5" />
             </button>
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder={isSessionReady ? "Select a template or type/edit your prompt here..." : "Waiting for session..."}
-              rows={Math.min(6, Math.max(1, input.split('\n').length))} // කෝඩ් එක දික්වෙනකොට ඉන්පුට් බොක්ස් එක ඔටෝ ලොකු වෙනවා
-              className="flex-1 bg-transparent border-none outline-none text-sm pl-10 pr-2 text-slate-200 placeholder-slate-500 resize-none py-1"
+              rows={Math.min(8, Math.max(4, input.split('\n').length))}
+              className="flex-1 bg-transparent border-none outline-none text-lg pl-14 pr-14 py-2 text-slate-200 placeholder-slate-500 resize-none min-h-[100px]"
               disabled={isStreaming || !isSessionReady}
             />
             <button
               type="submit"
               disabled={isStreaming || !input.trim() || !isSessionReady}
-              className="p-2 mb-0.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white transition disabled:opacity-40 flex-shrink-0"
+              className="absolute right-4 bottom-4 p-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white transition disabled:opacity-40 flex-shrink-0 cursor-pointer"
               title={!isSessionReady ? "Session not ready" : "Send message"}
             >
-              <Send className="w-4 h-4" />
+              <Send className="w-5 h-5" />
             </button>
           </div>
         </form>

@@ -416,7 +416,7 @@ export default function PromptManagerPage() {
                 return (
                   <div key={domain.id} className="space-y-1">
                     <div 
-                      className={`group flex items-center justify-between p-2.5 rounded-xl border transition cursor-pointer ${
+                      className={`group flex items-center justify-between p-3.5 rounded-2xl border transition cursor-pointer ${
                         isSelected 
                           ? 'bg-cyan-950/30 border-cyan-500/50 text-cyan-200' 
                           : 'bg-slate-900/40 border-slate-800/40 hover:border-slate-700/50 text-slate-300'
@@ -440,26 +440,26 @@ export default function PromptManagerPage() {
                       </div>
                       
                       {/* Actions */}
-                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             handleSelectItem({ id: domain.id, name: domain.name, type: 'domain' });
                           }}
-                          className="p-1 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 rounded transition"
+                          className="p-2.5 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 rounded-xl transition cursor-pointer"
                           title="Edit Domain"
                         >
-                          <Edit2 className="w-3.5 h-3.5" />
+                          <Edit2 className="w-4 h-4" />
                         </button>
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             handleDelete(domain.id, 'domain', domain.name);
                           }}
-                          className="p-1 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded transition"
+                          className="p-2.5 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-xl transition cursor-pointer"
                           title="Delete Domain"
                         >
-                          <Trash2 className="w-3.5 h-3.5" />
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
                     </div>
@@ -478,7 +478,7 @@ export default function PromptManagerPage() {
                             return (
                               <div key={prof.id} className="space-y-1">
                                 <div 
-                                  className={`group flex items-center justify-between p-2 rounded-lg border transition cursor-pointer ${
+                                  className={`group flex items-center justify-between py-2.5 px-3.5 rounded-xl border transition cursor-pointer ${
                                     isProfSelected 
                                       ? 'bg-cyan-950/30 border-cyan-500/40 text-cyan-200' 
                                       : 'bg-slate-900/20 border-slate-800/30 hover:border-slate-800 text-slate-300'
@@ -501,26 +501,26 @@ export default function PromptManagerPage() {
                                     <span className="text-[9px] text-slate-500 bg-slate-800/30 px-1 py-0.25 rounded uppercase">Profession</span>
                                   </div>
 
-                                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <button
                                       onClick={(e) => {
                                         e.stopPropagation();
                                         handleSelectItem({ id: prof.id, name: prof.name, type: 'profession', parentId: domain.id });
                                       }}
-                                      className="p-1 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 rounded transition"
+                                      className="p-2.5 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 rounded-xl transition cursor-pointer"
                                       title="Edit Profession"
                                     >
-                                      <Edit2 className="w-3.5 h-3.5" />
+                                      <Edit2 className="w-4 h-4" />
                                     </button>
                                     <button
                                       onClick={(e) => {
                                         e.stopPropagation();
                                         handleDelete(prof.id, 'profession', prof.name);
                                       }}
-                                      className="p-1 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded transition"
+                                      className="p-2.5 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-xl transition cursor-pointer"
                                       title="Delete Profession"
                                     >
-                                      <Trash2 className="w-3.5 h-3.5" />
+                                      <Trash2 className="w-4 h-4" />
                                     </button>
                                   </div>
                                 </div>
@@ -539,7 +539,7 @@ export default function PromptManagerPage() {
                                         return (
                                           <div key={role.id} className="space-y-1">
                                             <div 
-                                              className={`group flex items-center justify-between p-1.5 rounded-lg border transition cursor-pointer ${
+                                              className={`group flex items-center justify-between py-2.5 px-3.5 rounded-xl border transition cursor-pointer ${
                                                 isRoleSelected 
                                                   ? 'bg-cyan-950/30 border-cyan-500/40 text-cyan-200' 
                                                   : 'bg-slate-900/10 border-transparent hover:border-slate-850 text-slate-300'
@@ -562,26 +562,26 @@ export default function PromptManagerPage() {
                                                 <span className="text-[8px] text-slate-600 bg-slate-800/20 px-1 rounded uppercase">Role</span>
                                               </div>
 
-                                              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                              <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                                                 <button
                                                   onClick={(e) => {
                                                     e.stopPropagation();
                                                     handleSelectItem({ id: role.id, name: role.name, type: 'role', parentId: prof.id });
                                                   }}
-                                                  className="p-1 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 rounded transition"
+                                                  className="p-2.5 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 rounded-xl transition cursor-pointer"
                                                   title="Edit Role"
                                                 >
-                                                  <Edit2 className="w-3.5 h-3.5" />
+                                                  <Edit2 className="w-4 h-4" />
                                                 </button>
                                                 <button
                                                   onClick={(e) => {
                                                     e.stopPropagation();
                                                     handleDelete(role.id, 'role', role.name);
                                                   }}
-                                                  className="p-1 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded transition"
+                                                  className="p-2.5 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-xl transition cursor-pointer"
                                                   title="Delete Role"
                                                 >
-                                                  <Trash2 className="w-3.5 h-3.5" />
+                                                  <Trash2 className="w-4 h-4" />
                                                 </button>
                                               </div>
                                             </div>
@@ -600,7 +600,7 @@ export default function PromptManagerPage() {
                                                     return (
                                                       <div key={spec.id} className="space-y-1">
                                                         <div 
-                                                          className={`group flex items-center justify-between p-1.5 rounded-lg border transition cursor-pointer ${
+                                                          className={`group flex items-center justify-between py-2.5 px-3.5 rounded-xl border transition cursor-pointer ${
                                                             isSpecSelected 
                                                               ? 'bg-cyan-950/30 border-cyan-500/40 text-cyan-200' 
                                                               : 'bg-slate-900/10 border-transparent hover:border-slate-850 text-slate-300'
@@ -623,26 +623,26 @@ export default function PromptManagerPage() {
                                                             <span className="text-[8px] text-slate-600 bg-slate-800/20 px-1 rounded uppercase">Spec</span>
                                                           </div>
 
-                                                          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                          <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                                                             <button
                                                               onClick={(e) => {
                                                                 e.stopPropagation();
                                                                 handleSelectItem({ id: spec.id, name: spec.name, type: 'specialization', parentId: role.id });
                                                               }}
-                                                              className="p-1 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 rounded transition"
+                                                              className="p-2.5 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 rounded-xl transition cursor-pointer"
                                                               title="Edit Spec"
                                                             >
-                                                              <Edit2 className="w-3.5 h-3.5" />
+                                                              <Edit2 className="w-4 h-4" />
                                                             </button>
                                                             <button
                                                               onClick={(e) => {
                                                                 e.stopPropagation();
                                                                 handleDelete(spec.id, 'specialization', spec.name);
                                                               }}
-                                                              className="p-1 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded transition"
+                                                              className="p-2.5 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-xl transition cursor-pointer"
                                                               title="Delete Spec"
                                                             >
-                                                              <Trash2 className="w-3.5 h-3.5" />
+                                                              <Trash2 className="w-4 h-4" />
                                                             </button>
                                                           </div>
                                                         </div>
@@ -659,7 +659,7 @@ export default function PromptManagerPage() {
                                                                 return (
                                                                   <div 
                                                                     key={temp.id}
-                                                                    className={`group flex items-center justify-between p-1.5 rounded-lg border transition cursor-pointer ${
+                                                                    className={`group flex items-center justify-between py-2 px-3.5 rounded-xl border transition cursor-pointer ${
                                                                       isTempSelected 
                                                                         ? 'bg-cyan-950/40 border-cyan-500/50 text-cyan-100' 
                                                                         : 'bg-slate-900/5 border-transparent hover:border-slate-850 text-slate-400 hover:text-slate-200'
@@ -678,7 +678,7 @@ export default function PromptManagerPage() {
                                                                       <span className="text-[8px] text-cyan-400/80 bg-cyan-950/20 px-1 rounded uppercase">Template</span>
                                                                     </div>
 
-                                                                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                                    <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                                                                       <button
                                                                         onClick={(e) => {
                                                                           e.stopPropagation();
@@ -690,20 +690,20 @@ export default function PromptManagerPage() {
                                                                             parentId: spec.id 
                                                                           });
                                                                         }}
-                                                                        className="p-1 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 rounded transition"
+                                                                        className="p-2.5 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 rounded-xl transition cursor-pointer"
                                                                         title="Edit Template"
                                                                       >
-                                                                        <Edit2 className="w-3 h-3" />
+                                                                        <Edit2 className="w-4 h-4" />
                                                                       </button>
                                                                       <button
                                                                         onClick={(e) => {
                                                                           e.stopPropagation();
                                                                           handleDelete(temp.id, 'template', temp.name);
                                                                         }}
-                                                                        className="p-1 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded transition"
+                                                                        className="p-2.5 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-xl transition cursor-pointer"
                                                                         title="Delete Template"
                                                                       >
-                                                                        <Trash2 className="w-3 h-3" />
+                                                                        <Trash2 className="w-4 h-4" />
                                                                       </button>
                                                                     </div>
                                                                   </div>
@@ -762,14 +762,14 @@ export default function PromptManagerPage() {
             )}
 
             {/* Form Mode Selector Tabs */}
-            <div className="bg-slate-950 p-1 rounded-xl flex border border-slate-800">
+            <div className="bg-slate-950 p-1.5 rounded-2xl flex border border-slate-800">
               <button
                 type="button"
                 onClick={handleSwitchToCreate}
-                className={`flex-1 py-2 text-xs font-semibold rounded-lg transition ${
+                className={`flex-1 py-3 px-4 text-sm font-semibold rounded-xl transition ${
                   formMode === 'create' 
                     ? 'bg-slate-850 text-cyan-400 shadow-sm border border-slate-800' 
-                    : 'text-slate-400 hover:text-slate-200'
+                    : 'text-slate-400 hover:text-slate-200 cursor-pointer'
                 }`}
               >
                 Create New Element
@@ -778,10 +778,10 @@ export default function PromptManagerPage() {
                 type="button"
                 disabled={!selectedItem}
                 onClick={() => selectedItem && handleSelectItem(selectedItem)}
-                className={`flex-1 py-2 text-xs font-semibold rounded-lg transition ${
+                className={`flex-1 py-3 px-4 text-sm font-semibold rounded-xl transition ${
                   formMode === 'edit'
                     ? 'bg-slate-850 text-cyan-400 shadow-sm border border-slate-800' 
-                    : 'text-slate-400 hover:text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed'
+                    : 'text-slate-400 hover:text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer'
                 }`}
                 title={!selectedItem ? 'Select an item in the tree to edit' : ''}
               >
@@ -807,7 +807,7 @@ export default function PromptManagerPage() {
                   <button 
                     type="button" 
                     onClick={handleSwitchToCreate} 
-                    className="text-[10px] text-slate-400 hover:text-cyan-400 transition uppercase font-semibold"
+                    className="text-[10px] text-slate-400 hover:text-cyan-400 transition uppercase font-semibold cursor-pointer"
                   >
                     Switch to Add
                   </button>
@@ -818,7 +818,7 @@ export default function PromptManagerPage() {
               {formMode === 'create' && (
                 <div className="space-y-1.5">
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-400">Target Level</label>
-                  <div className="grid grid-cols-5 gap-1 bg-slate-950 p-1 rounded-lg border border-slate-850">
+                  <div className="grid grid-cols-5 gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-855">
                     {(['domain', 'profession', 'role', 'specialization', 'template'] as EntityType[]).map((type) => (
                       <button
                         key={type}
@@ -827,7 +827,7 @@ export default function PromptManagerPage() {
                           clearNotifications();
                           setCreateType(type);
                         }}
-                        className={`py-1 text-[10px] font-bold rounded capitalize transition ${
+                        className={`py-2 text-xs font-bold rounded-lg capitalize transition cursor-pointer ${
                           createType === type 
                             ? 'bg-cyan-950 text-cyan-400 border border-cyan-900/55' 
                             : 'text-slate-500 hover:text-slate-300'
@@ -852,7 +852,7 @@ export default function PromptManagerPage() {
                         value={formDomainId}
                         onChange={handleFormDomainChange}
                         required
-                        className="w-full px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-750 focus:border-cyan-500 rounded-xl text-xs text-slate-200 focus:outline-none transition cursor-pointer"
+                        className="w-full py-3.5 px-4 bg-slate-900 border border-slate-800 hover:border-slate-750 focus:border-cyan-500 rounded-2xl text-base text-slate-200 focus:outline-none transition cursor-pointer"
                       >
                         <option value="">-- Select Domain --</option>
                         {tree.map(d => (
@@ -871,7 +871,7 @@ export default function PromptManagerPage() {
                         onChange={handleFormProfessionChange}
                         required
                         disabled={!formDomainId}
-                        className="w-full px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-750 focus:border-cyan-500 rounded-xl text-xs text-slate-200 focus:outline-none transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                        className="w-full py-3.5 px-4 bg-slate-900 border border-slate-800 hover:border-slate-750 focus:border-cyan-500 rounded-2xl text-base text-slate-200 focus:outline-none transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                       >
                         <option value="">-- Select Profession --</option>
                         {formProfessions.map(p => (
@@ -890,7 +890,7 @@ export default function PromptManagerPage() {
                         onChange={handleFormRoleChange}
                         required
                         disabled={!formProfessionId}
-                        className="w-full px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-750 focus:border-cyan-500 rounded-xl text-xs text-slate-200 focus:outline-none transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                        className="w-full py-3.5 px-4 bg-slate-900 border border-slate-800 hover:border-slate-755 focus:border-cyan-500 rounded-2xl text-base text-slate-200 focus:outline-none transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                       >
                         <option value="">-- Select Role --</option>
                         {formRoles.map(r => (
@@ -909,7 +909,7 @@ export default function PromptManagerPage() {
                         onChange={(e) => setFormSpecializationId(e.target.value)}
                         required
                         disabled={!formRoleId}
-                        className="w-full px-3 py-2 bg-slate-900 border border-slate-800 hover:border-slate-750 focus:border-cyan-500 rounded-xl text-xs text-slate-200 focus:outline-none transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                        className="w-full py-3.5 px-4 bg-slate-900 border border-slate-800 hover:border-slate-750 focus:border-cyan-500 rounded-2xl text-base text-slate-200 focus:outline-none transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                       >
                         <option value="">-- Select Specialization --</option>
                         {formSpecializations.map(s => (
@@ -931,7 +931,7 @@ export default function PromptManagerPage() {
                   required
                   value={nameInput}
                   onChange={(e) => setNameInput(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 focus:border-cyan-500 rounded-xl text-xs text-slate-100 focus:outline-none transition"
+                  className="w-full py-3.5 px-4 bg-slate-900 border border-slate-800 focus:border-cyan-500 rounded-2xl text-base text-slate-100 focus:outline-none transition"
                   placeholder={
                     formMode === 'create' 
                       ? `Enter name for the new ${createType}...` 
@@ -951,7 +951,7 @@ export default function PromptManagerPage() {
                     rows={8}
                     value={promptTextInput}
                     onChange={(e) => setPromptTextInput(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-900 border border-slate-800 focus:border-cyan-500 rounded-xl text-xs text-slate-200 focus:outline-none font-mono leading-relaxed resize-none"
+                    className="w-full p-5 bg-slate-900 border border-slate-800 focus:border-cyan-500 rounded-2xl text-base text-slate-200 focus:outline-none font-mono leading-relaxed resize-none min-h-[150px]"
                     placeholder="Act as a {{role}}. Write an email targeting {{audience}} about {{topic}}..."
                   />
                   <span className="text-[10px] text-slate-500 block mt-0.5 leading-normal">
@@ -964,11 +964,11 @@ export default function PromptManagerPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full py-2.5 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-xs font-bold text-white rounded-xl transition flex items-center justify-center gap-2 mt-4 shadow-lg shadow-cyan-950/30 cursor-pointer"
+                className="w-full py-3.5 px-6 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-base font-semibold text-white rounded-2xl transition flex items-center justify-center gap-2 mt-4 shadow-lg shadow-cyan-950/30 cursor-pointer"
               >
                 {submitting ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <Loader2 className="w-5 h-5 animate-spin" />
                     <span>Saving...</span>
                   </>
                 ) : (

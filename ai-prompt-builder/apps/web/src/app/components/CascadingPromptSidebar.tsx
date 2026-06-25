@@ -190,15 +190,15 @@ export default function CascadingPromptSidebar({ onSelectTemplate, resetTrigger 
           </div>
         ) : (
           <div className="flex flex-col gap-4">
-            <p className="text-xs text-slate-500 font-medium">Cascade through the levels to load a prompt:</p>
+            <p className="text-sm text-slate-500 font-medium">Cascade through the levels to load a prompt:</p>
 
             {/* Level 1: Domain Dropdown */}
-            <div className="space-y-1">
-              <label className="block text-[10px] font-bold tracking-wider text-slate-400 uppercase">1. Domain</label>
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold tracking-wider text-slate-400 uppercase">1. Domain</label>
               <select
                 value={selectedDomainId}
                 onChange={handleDomainChange}
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800/80 hover:border-slate-700 focus:border-cyan-500 rounded-lg text-xs text-slate-200 focus:outline-none transition cursor-pointer"
+                className="w-full py-3.5 px-4 bg-slate-950 border border-slate-800/80 hover:border-slate-700 focus:border-cyan-500 rounded-xl text-base text-slate-200 focus:outline-none transition cursor-pointer"
               >
                 <option value="">-- Select Domain --</option>
                 {tree.map((domain) => (
@@ -210,13 +210,13 @@ export default function CascadingPromptSidebar({ onSelectTemplate, resetTrigger 
             </div>
 
             {/* Level 2: Profession Dropdown */}
-            <div className="space-y-1">
-              <label className="block text-[10px] font-bold tracking-wider text-slate-400 uppercase">2. Profession</label>
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold tracking-wider text-slate-400 uppercase">2. Profession</label>
               <select
                 value={selectedProfessionId}
                 onChange={handleProfessionChange}
                 disabled={!selectedDomainId}
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800/80 hover:border-slate-700 focus:border-cyan-500 rounded-lg text-xs text-slate-200 focus:outline-none transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                className="w-full py-3.5 px-4 bg-slate-950 border border-slate-800/80 hover:border-slate-700 focus:border-cyan-500 rounded-xl text-base text-slate-200 focus:outline-none transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               >
                 <option value="">-- Select Profession --</option>
                 {professions.map((prof) => (
@@ -228,13 +228,13 @@ export default function CascadingPromptSidebar({ onSelectTemplate, resetTrigger 
             </div>
 
             {/* Level 3: Role Dropdown */}
-            <div className="space-y-1">
-              <label className="block text-[10px] font-bold tracking-wider text-slate-400 uppercase">3. Role</label>
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold tracking-wider text-slate-400 uppercase">3. Role</label>
               <select
                 value={selectedRoleId}
                 onChange={handleRoleChange}
                 disabled={!selectedProfessionId}
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800/80 hover:border-slate-700 focus:border-cyan-500 rounded-lg text-xs text-slate-200 focus:outline-none transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                className="w-full py-3.5 px-4 bg-slate-950 border border-slate-800/80 hover:border-slate-700 focus:border-cyan-500 rounded-xl text-base text-slate-200 focus:outline-none transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               >
                 <option value="">-- Select Role --</option>
                 {roles.map((role) => (
@@ -246,13 +246,13 @@ export default function CascadingPromptSidebar({ onSelectTemplate, resetTrigger 
             </div>
 
             {/* Level 4: Specialization Dropdown */}
-            <div className="space-y-1">
-              <label className="block text-[10px] font-bold tracking-wider text-slate-400 uppercase">4. Specialization</label>
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold tracking-wider text-slate-400 uppercase">4. Specialization</label>
               <select
                 value={selectedSpecializationId}
                 onChange={handleSpecializationChange}
                 disabled={!selectedRoleId}
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800/80 hover:border-slate-700 focus:border-cyan-500 rounded-lg text-xs text-slate-200 focus:outline-none transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                className="w-full py-3.5 px-4 bg-slate-950 border border-slate-800/80 hover:border-slate-700 focus:border-cyan-500 rounded-xl text-base text-slate-200 focus:outline-none transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               >
                 <option value="">-- Select Specialization --</option>
                 {specializations.map((spec) => (
@@ -264,16 +264,16 @@ export default function CascadingPromptSidebar({ onSelectTemplate, resetTrigger 
             </div>
 
             {/* Level 5: Template Dropdown */}
-            <div className="space-y-1">
-              <label className="block text-[10px] font-bold tracking-wider text-cyan-400 uppercase flex items-center gap-1">
-                <Sparkles className="w-3 h-3 animate-pulse" />
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold tracking-wider text-cyan-400 uppercase flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 animate-pulse" />
                 <span>5. Template</span>
               </label>
               <select
                 value={selectedTemplateId}
                 onChange={handleTemplateChange}
                 disabled={!selectedSpecializationId}
-                className="w-full px-3 py-2 bg-slate-950 border border-cyan-950 hover:border-cyan-900 focus:border-cyan-500 rounded-lg text-xs text-cyan-200 focus:outline-none transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                className="w-full py-3.5 px-4 bg-slate-950 border border-cyan-955 hover:border-cyan-900 focus:border-cyan-500 rounded-xl text-base text-cyan-200 focus:outline-none transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               >
                 <option value="">-- Select Template --</option>
                 {templates.map((temp) => (
@@ -288,20 +288,20 @@ export default function CascadingPromptSidebar({ onSelectTemplate, resetTrigger 
       </div>
 
       {/* Footer Settings and SignOut */}
-      <div className="mt-auto pt-4 border-t border-slate-800/80 flex flex-col gap-2">
+      <div className="mt-auto pt-4 border-t border-slate-800/80 flex flex-col gap-2.5">
         <button
           onClick={() => router.push('/prompt-manager')}
-          className="w-full py-2.5 px-4 bg-slate-950 hover:bg-slate-900 border border-slate-800/80 hover:border-slate-700 rounded-xl text-xs font-semibold text-slate-300 transition flex items-center justify-center gap-2 group cursor-pointer"
+          className="w-full py-3.5 px-6 bg-slate-950 hover:bg-slate-900 border border-slate-800/80 hover:border-slate-700 rounded-2xl text-base font-semibold text-slate-300 transition flex items-center justify-center gap-2 group cursor-pointer"
         >
-          <Settings className="w-4 h-4 text-slate-400 group-hover:rotate-45 transition-transform duration-300" />
+          <Settings className="w-5 h-5 text-slate-400 group-hover:rotate-45 transition-transform duration-300" />
           <span>Prompt Dashboard</span>
         </button>
 
         <button 
           onClick={() => signOut()} 
-          className="w-full flex items-center justify-center gap-2 text-xs text-slate-400 hover:text-red-455 hover:text-red-400 transition py-2.5 px-4 rounded-xl bg-slate-950 hover:bg-slate-900/50 border border-slate-800/50 hover:border-slate-700/50 cursor-pointer"
+          className="w-full flex items-center justify-center gap-2 text-base text-slate-400 hover:text-red-400 transition py-3.5 px-6 rounded-2xl bg-slate-950 hover:bg-slate-900/50 border border-slate-800/50 hover:border-slate-700/50 cursor-pointer"
         >
-          <LogOut className="w-4 h-4" />
+          <LogOut className="w-5 h-5" />
           <span>Log Out ({session?.user?.name || 'User'})</span>
         </button>
       </div>
