@@ -5,7 +5,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useChatStore } from './stores/chatStore';
 import CascadingPromptSidebar from './components/CascadingPromptSidebar';
-import { Send, Bot, User, Sparkles, LogOut, Loader2 } from 'lucide-react';
+import { Send, Bot, User, Sparkles, LogOut, Loader2, Plus } from 'lucide-react';
 
 export default function ChatPage() {
   const { data: session, status } = useSession();
@@ -22,11 +22,13 @@ export default function ChatPage() {
   const disconnectSocket = useChatStore((state) => state.disconnectSocket);
   
   const [input, setInput] = useState('');
-  const dummySessionId = 'chat-session-xyz-789';
+  const [sessionId, setSessionId] = useState(() => 'chat-session-' + Math.random().toString(36).substring(2, 11));
+  const [resetTrigger, setResetTrigger] = useState(0);
   const token = (session as any)?.accessToken;
 
   // Connection Guard
   const connectedTokenRef = useRef<string | null>(null);
+  const connectedSessionIdRef = useRef<string | null>(null);
 
   // සොකට් එක සම්බන්ධ කිරීම
   useEffect(() => {
@@ -35,11 +37,12 @@ export default function ChatPage() {
       return;
     }
 
-    if (token && connectedTokenRef.current !== token) {
+    if (token && (connectedTokenRef.current !== token || connectedSessionIdRef.current !== sessionId)) {
       connectedTokenRef.current = token;
-      connectSocket(token, dummySessionId);
+      connectedSessionIdRef.current = sessionId;
+      connectSocket(token, sessionId);
     }
-  }, [token, status, connectSocket, router, dummySessionId]);
+  }, [token, status, connectSocket, router, sessionId]);
 
   // ඩිස්කනෙක්ට් වීම
   useEffect(() => {
@@ -61,8 +64,25 @@ export default function ChatPage() {
     if (!input.trim() || isStreaming || !isSessionReady) return;
 
     console.log("📤 [ChatPage] Sending edited prompt to AI.");
-    useChatStore.getState().sendMessage(dummySessionId, input);
+    useChatStore.getState().sendMessage(sessionId, input);
     setInput(''); // සෙන්ඩ් කරාට පස්සේ ඉන්පුට් එක හිස් කරනවා
+  };
+
+  const handleNewChat = () => {
+    console.log("➕ [ChatPage] Starting a new chat session.");
+    
+    // 1. Clear the active messages state array
+    useChatStore.setState({ messages: [], errorMessage: null, isStreaming: false });
+    
+    // 2. Reset all 5 cascading dropdowns back to default by triggering the reset
+    setResetTrigger((prev) => prev + 1);
+    
+    // 3. Clear any existing text inside the textarea
+    setInput('');
+    
+    // 4. Reset any chat session IDs, starting a completely blank session
+    const newSessionId = 'chat-session-' + Math.random().toString(36).substring(2, 11);
+    setSessionId(newSessionId);
   };
 
   // එන්ටර් එක එබුවම සෙන්ඩ් වෙන්න (හැබැයි Shift + Enter එබුවොත් නිව් ලයින් එකක් වැටෙන්න)
@@ -91,9 +111,6 @@ export default function ChatPage() {
             <Sparkles className="w-6 h-6 text-cyan-400" />
             <h1 className="text-xl font-bold tracking-wider text-slate-100">PromptCraft</h1>
           </div>
-          <button className="w-full py-2 px-4 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-sm font-semibold text-slate-300 transition">
-            + New Chat
-          </button>
         </div>
         
         <button 
@@ -106,7 +123,7 @@ export default function ChatPage() {
       </div>
 
       {/* Middle Sidebar */}
-      <CascadingPromptSidebar onSelectTemplate={handleSelectTemplate} />
+      <CascadingPromptSidebar resetTrigger={resetTrigger} onSelectTemplate={handleSelectTemplate} />
 
       {/* Right Area (Main Chat) */}
       <div className="flex-1 flex flex-col justify-between bg-slate-900">
@@ -159,14 +176,22 @@ export default function ChatPage() {
           )}
 
           {/* 🛠️ <textarea> එකක් දැම්මා ලොකු ටෙම්ප්ලේට් ලේසියෙන් එඩිට් කරන්න පුළුවන් වෙන්න */}
-          <div className="max-w-2xl mx-auto flex items-end gap-2 bg-slate-800/80 rounded-xl p-2 border border-slate-700 focus-within:border-cyan-500 transition">
+          <div className="max-w-2xl mx-auto flex items-end gap-2 bg-slate-800/80 rounded-xl p-2 border border-slate-700 focus-within:border-cyan-500 transition relative">
+            <button
+              type="button"
+              onClick={handleNewChat}
+              className="absolute left-3 bottom-3 p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition"
+              title="New Chat"
+            >
+              <Plus className="w-4 h-4" />
+            </button>
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder={isSessionReady ? "Select a template or type/edit your prompt here..." : "Waiting for session..."}
               rows={Math.min(6, Math.max(1, input.split('\n').length))} // කෝඩ් එක දික්වෙනකොට ඉන්පුට් බොක්ස් එක ඔටෝ ලොකු වෙනවා
-              className="flex-1 bg-transparent border-none outline-none text-sm px-2 text-slate-200 placeholder-slate-500 resize-none py-1"
+              className="flex-1 bg-transparent border-none outline-none text-sm pl-10 pr-2 text-slate-200 placeholder-slate-500 resize-none py-1"
               disabled={isStreaming || !isSessionReady}
             />
             <button

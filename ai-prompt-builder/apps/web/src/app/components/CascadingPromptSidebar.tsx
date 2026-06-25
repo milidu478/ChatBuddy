@@ -37,9 +37,10 @@ interface Domain {
 
 interface CascadingPromptSidebarProps {
   onSelectTemplate: (promptText: string) => void;
+  resetTrigger?: number;
 }
 
-export default function CascadingPromptSidebar({ onSelectTemplate }: CascadingPromptSidebarProps) {
+export default function CascadingPromptSidebar({ onSelectTemplate, resetTrigger }: CascadingPromptSidebarProps) {
   const { data: session } = useSession();
   const router = useRouter();
   
@@ -53,6 +54,17 @@ export default function CascadingPromptSidebar({ onSelectTemplate }: CascadingPr
   const [selectedRoleId, setSelectedRoleId] = useState<string>('');
   const [selectedSpecializationId, setSelectedSpecializationId] = useState<string>('');
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>('');
+
+  // Reset dropdown selections when resetTrigger changes
+  useEffect(() => {
+    if (resetTrigger !== undefined && resetTrigger > 0) {
+      setSelectedDomainId('');
+      setSelectedProfessionId('');
+      setSelectedRoleId('');
+      setSelectedSpecializationId('');
+      setSelectedTemplateId('');
+    }
+  }, [resetTrigger]);
 
   // 1. Fetch entire nested hierarchy tree from the backend
   const fetchTree = async () => {
