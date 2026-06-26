@@ -213,21 +213,25 @@ export default function ChatPage() {
 
   if (status === 'loading') {
     return (
-      <div className="h-screen flex items-center justify-center bg-[#090d16] text-cyan-400">
-        <Loader2 className="w-8 h-8 animate-spin" />
+      <div className="h-screen w-screen bg-[#030712] p-3 md:p-4 flex overflow-hidden">
+        <div className="w-full h-full bg-slate-950 rounded-2xl border border-slate-800/80 shadow-[0_0_50px_rgba(0,0,0,0.6)] flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-cyan-400" />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex h-screen w-screen overflow-x-auto overflow-y-hidden bg-[#090d16]">
-      {/* Left sidebar — deep panel */}
-      <div className="flex-shrink-0 h-full border-r border-slate-800/40">
-        <CascadingPromptSidebar resetTrigger={resetTrigger} onSelectTemplate={handleSelectTemplate} />
-      </div>
+    <div className="h-screen w-screen bg-[#030712] p-3 md:p-4 flex overflow-hidden">
+      {/* Premium app frame */}
+      <div className="w-full h-full bg-slate-950 rounded-2xl border border-slate-800/80 shadow-[0_0_50px_rgba(0,0,0,0.6)] flex overflow-hidden relative min-w-0">
+        {/* Left sidebar — deep panel */}
+        <div className="flex-shrink-0 h-full min-h-0 overflow-hidden border-r border-slate-800/40">
+          <CascadingPromptSidebar resetTrigger={resetTrigger} onSelectTemplate={handleSelectTemplate} />
+        </div>
 
-      {/* Center workspace — elevated surface */}
-      <div className="flex-1 h-full flex flex-col overflow-hidden min-w-0 bg-gradient-to-b from-[#121829] via-[#0f1524] to-[#0d1220] relative">
+        {/* Center workspace — elevated surface */}
+        <div className="flex-1 h-full min-h-0 min-w-0 flex flex-col overflow-hidden bg-gradient-to-b from-[#121829] via-[#0f1524] to-[#0d1220] relative">
         {/* Subtle ambient glow */}
         <div
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(6,182,212,0.06),transparent)]"
@@ -369,21 +373,22 @@ export default function ChatPage() {
             </div>
           </form>
         </div>
-      </div>
+        </div>
 
-      {/* Right sidebar — deep panel */}
-      <div className="flex-shrink-0 h-full border-l border-slate-800/40">
-        <ChatHistorySidebar
-          sessions={chatSessions}
-          activeSessionId={activeSessionId}
-          loading={historyLoading}
-          canClearChat={messages.length > 0}
-          onNewChat={handleNewChat}
-          onClearChat={handleClearChat}
-          onSelectSession={handleSelectSession}
-          onDeleteSession={handleDeleteSession}
-          onClearAll={handleClearAllHistory}
-        />
+        {/* Right sidebar — deep panel */}
+        <div className="flex-shrink-0 h-full min-h-0 overflow-hidden border-l border-slate-800/40">
+          <ChatHistorySidebar
+            sessions={chatSessions}
+            activeSessionId={activeSessionId}
+            loading={historyLoading}
+            canClearChat={messages.length > 0}
+            onNewChat={handleNewChat}
+            onClearChat={handleClearChat}
+            onSelectSession={handleSelectSession}
+            onDeleteSession={handleDeleteSession}
+            onClearAll={handleClearAllHistory}
+          />
+        </div>
       </div>
     </div>
   );
