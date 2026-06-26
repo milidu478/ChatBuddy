@@ -50,16 +50,16 @@ export default function ChatHistorySidebar({
   };
 
   return (
-    <aside className="hidden md:flex w-64 xl:w-72 bg-slate-950 border-l border-slate-800/80 flex-col h-full flex-shrink-0">
-      <div className="p-4 border-b border-slate-800/80">
+    <aside className="hidden md:flex w-64 xl:w-72 bg-[#090d16] flex-col h-full flex-shrink-0">
+      <div className="p-4 border-b border-slate-800/40">
         <div className="flex items-center gap-2 mb-4 px-1">
           <History className="w-5 h-5 text-cyan-400" />
-          <h2 className="text-sm font-semibold tracking-wide text-slate-200 uppercase">Chat History</h2>
+          <h2 className="text-xs font-semibold tracking-wider text-slate-400/80 uppercase">Chat History</h2>
         </div>
         <button
           type="button"
           onClick={onNewChat}
-          className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-cyan-600/90 hover:bg-cyan-500 text-white rounded-xl text-sm font-semibold transition-all duration-150 shadow-lg shadow-cyan-950/30"
+          className="w-full flex items-center justify-center gap-2 py-3 px-4 border border-slate-800 hover:bg-slate-900/60 text-slate-200 rounded-xl text-sm font-medium transition-all duration-150"
         >
           <MessageSquarePlus className="w-4 h-4" />
           New Chat
@@ -128,7 +128,7 @@ export default function ChatHistorySidebar({
       </div>
 
       {sessions.length > 0 && (
-        <div className="p-3 border-t border-slate-800/80">
+        <div className="p-3 border-t border-slate-800/40">
           {confirmClearAll ? (
             <div className="space-y-2">
               <p className="text-[11px] text-slate-400 px-1 leading-relaxed">
